@@ -19,3 +19,5 @@ target 'reactndSquawker' do
   #   end
   # end
 end
+
+pod 'Firebase/Analytics'

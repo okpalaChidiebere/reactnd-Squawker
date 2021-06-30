@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "164661899538",
+    "project_id": "react-skoob",
+    "storage_bucket": "react-skoob.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:164661899538:android:48a95d4e54fb31c93243cb",
+        "android_client_info": {
+          "package_name": "com.reactndsquawker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "164661899538-eql4ccchd390lcbfvnfntg4cucnurb46.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB90fIktrGOj_qukK8e19oBbJlTuaqetpY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "164661899538-eql4ccchd390lcbfvnfntg4cucnurb46.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

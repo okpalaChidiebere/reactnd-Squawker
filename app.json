@@ -7,6 +7,14 @@
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "android": {
+      "googleServicesFile": "./google-services.json",
+      "package": "com.reactndsquawker"
+    },
+    "ios": {
+      "bundleIdentifier": "org.name.reactndSquawker",
+      "googleServicesFile": "./GoogleService-Info.plist"
+    }
   }
 }
