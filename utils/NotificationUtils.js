@@ -1,14 +1,15 @@
 import messaging from "@react-native-firebase/messaging"
-import { Platform } from "react-native"
 
-export async function registerForPushNotificationsAsync() {
+export async function requestUserPermission() {
 
-    if(Platform.OS == 'ios') {
-        await messaging().registerDeviceForRemoteMessages()
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+    if (!enabled) {
+        alert("Go to the Settings page to enable push notification for complete Squawker experience")
     }
-
-    const fcmToken = await messaging().getToken()
-    return fcmToken
 }
   
 /**
@@ -20,5 +21,5 @@ export async function registerForPushNotificationsAsync() {
 * @param token The new token.
 */
 export async function sendRegistrationToServer(token){
-    //console.log(token)
+    
 }

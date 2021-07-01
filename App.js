@@ -6,18 +6,27 @@ import messaging from "@react-native-firebase/messaging"
 import MainNavigator from "./ui/MainNavigator"
 import db, { createTable } from "./utils/DatabaseProvider"
 import { colorPrimary, colorPrimaryDark } from "./utils/strings"
-import { registerForPushNotificationsAsync, sendRegistrationToServer } from "./utils/NotificationUtils"
+import { requestUserPermission, sendRegistrationToServer } from "./utils/NotificationUtils"
 
 export default function App() {
 
   useEffect(() => {
-    createTable(db)
-    registerForPushNotificationsAsync().then(token => sendRegistrationToServer(token))
+    (async() => {
+      createTable(db)
+      await requestUserPermission()
+    })()
 
-    // Listen to whether the token changes
-    return messaging().onTokenRefresh(token => {
+    /**
+     * Called if InstanceID token is updated. This may occur if the security of
+     * the previous token had been compromised (eg un-installing the app). 
+     * Note that this is called when the InstanceID token is initially generated 
+     * so this is where you would retrieve the token.
+     */
+    const unsubscribe = messaging().onTokenRefresh(async token => {
+      console.log(token)
       sendRegistrationToServer(token)
     })
+    return unsubscribe
   }, [])
   return (
     <SafeAreaView style={styles.container}>
