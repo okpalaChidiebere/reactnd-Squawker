@@ -4,10 +4,11 @@ import { createStackNavigator } from "@react-navigation/stack"
 import MainComponent, { MainComponentOptions } from "./MainComponent"
 import FollowingSquawker, { FollowingSquawkerOptions } from "./FollowingSquawker"
 import { component_main, component_following } from "../utils/strings"
+import linking from "../linking"
 
 const Stack = createStackNavigator()
 const MainNavigator = () => (
-  <NavigationContainer>
+  <NavigationContainer linking={linking}>
     <Stack.Navigator headerMode="screen" initialRouteName={component_main}>
         <Stack.Screen
           name={component_main}
