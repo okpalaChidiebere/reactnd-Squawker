@@ -1,6 +1,8 @@
 import messaging from "@react-native-firebase/messaging"
+import * as Notifications from "expo-notifications"
 import { Linking } from "react-native"
 import { component_main } from "./utils/strings"
+import executeTask from "./utils/SquawkerTasks"
 
 
 const config = {
@@ -18,18 +20,33 @@ function subscribe(listener) {
     Linking.addEventListener('url', onReceiveURL)
 
     /**
-     * When any FCM payload (Notification Message or Data Message) is received while the app is active, the listener callback
-     * is called with a `RemoteMessage`. Returns an unsubscribe
-     * function to stop listening for new messages.
+     * Called when user clicks on notifications displayed by expo.
+     *
+     * @param response Object representing the message received from Firebase Cloud Messaging
+     */
+    const subscription = Notifications.addNotificationResponseReceivedListener(response => {
+
+      const url = response.notification.request.content.data.url //this url will as our pending intent to open a particular screen in our app
+      // Let React Navigation handle the URL if any
+      if(url){
+        listener(url)
+      }
+    })
+
+    /**
+     * Called when message is received when our app is in the foreground
+     *
+     * @param remoteMessage Object representing the message received from Firebase Cloud Messaging
+     * @return an method used to stop listening for messages
      */
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-        console.log('Notification received when app is in foreground state:', remoteMessage);
+      executeTask(remoteMessage.data)
     });
 
     /**
-     * When the user presses a Notification Message displayed via FCM,
-     * this listener will be called if the app has opened from
-     * a background state.
+     * Called when user clicks on notification displayed by FCM when our app is in background.
+     *
+     * @param remoteMessage Object representing the message received from Firebase Cloud Messaging
      */
     messaging().onNotificationOpenedApp(async remoteMessage => {
         console.log(
@@ -44,11 +61,10 @@ function subscribe(listener) {
     });
   
     /**
-     * When the user presses a Notification Message displayed via FCM,
-     * this listener will be called if the app has opened from
-     * a killed state. This method will return a
-     * `RemoteMessage` containing the notification data, or
-     * `null` if the app was opened via another method.
+     * Called when user clicks on notification displayed by FCM when our app has been terminated.
+     *
+     * @param remoteMessage Object representing the message received from Firebase Cloud Messaging
+     * remoteMessage will be null if the app was opened via another method
      */
       messaging()
         .getInitialNotification()
@@ -69,6 +85,7 @@ function subscribe(listener) {
         // Clean up the event listeners
         Linking.removeEventListener('url', onReceiveURL)
         unsubscribe()
+        subscription.remove()
     }
 }
 

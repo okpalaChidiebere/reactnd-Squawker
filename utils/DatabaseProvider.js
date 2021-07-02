@@ -33,6 +33,26 @@ export const createTable = (db) => {
     })
 }
 
+export const insertSquawk = (db, data) => {
+
+    const SQL_INSERT = "INSERT INTO "+SQUAWK_MESSAGES + ` (${COLUMN_AUTHOR},${COLUMN_AUTHOR_KEY},${COLUMN_DATE},${COLUMN_MESSAGE}) VALUES `
+                        + "(?,?,?,?)"
+    db.transaction(
+        async (tx) => {
+            tx.executeSql( SQL_INSERT, [
+                data.author,
+                data.authorKey,
+                parseInt(data.date),
+                data.message,
+            ])
+        },
+        (e) => {
+            reject("ERROR: " + e.message)
+            console.log("ERROR: " + e.message)
+        }
+    )
+}
+
 export const listAllSquawks = (db) => {
 
     /*
@@ -51,7 +71,7 @@ export const listAllSquawks = (db) => {
         const following  = await getFollowingPreferences()
         const whereClause = createSelectionForCurrentFollowers(following)
         const query = "SELECT " + 
-                        COLUMN_ID + ", " +
+                        //COLUMN_ID + ", " +
                         COLUMN_AUTHOR + ", " +
                         COLUMN_AUTHOR_KEY + ", " +
                         COLUMN_MESSAGE + ", " +

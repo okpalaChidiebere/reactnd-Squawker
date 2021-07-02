@@ -1,22 +1,22 @@
-import React, { useState, useEffect } from "react"
+import React, { useEffect } from "react"
 import { View, StyleSheet, TouchableOpacity, FlatList }  from "react-native"
 import { useIsFocused } from "@react-navigation/native"
+import { connect } from "react-redux"
 import SquawkerListItem from "./SquawkerListItem"
 import { colorPrimary, app_name, component_following, white, colorDivider } from "../utils/strings"
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 import db, { listAllSquawks } from "../utils/DatabaseProvider"
+import { receiveSquawks } from "../actions"
 
 
-export default function MainComponent() {
+function MainComponent({ squawks, dispatch }) {
 
   const isFocused = useIsFocused()
-
-  const [messages, setMessages] = useState([])
 
   useEffect(() => {
     (async () => {
       const squawtMessages = await listAllSquawks(db)
-      setMessages(squawtMessages)
+      dispatch(receiveSquawks(squawtMessages))
     })()
 
     /**
@@ -32,10 +32,10 @@ export default function MainComponent() {
     return ( 
     <View style={styles.container}>
       <FlatList 
-        data={messages} 
-        renderItem={({ item }) => (
+        data={squawks} 
+        renderItem={({ item, index }) => (
           <SquawkerListItem 
-            key={item._id}
+            key={index}
             author={item.author}
             authorKey={item.authorKey}
             message={item.message}
@@ -48,6 +48,15 @@ export default function MainComponent() {
     </View>
     )
 }
+
+const mapStateToProps = ( squawks ) => { 
+  return {
+    squawks 
+  }
+}
+
+const connectedMainComponent = connect(mapStateToProps)
+export default connectedMainComponent(MainComponent)
 
 const styles = StyleSheet.create({
     container: {

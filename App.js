@@ -3,6 +3,8 @@ import React, { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context"
 import messaging from "@react-native-firebase/messaging"
+import { Provider as StoreProvider } from "react-redux"
+import store from "./store/configureStore"
 import MainNavigator from "./ui/MainNavigator"
 import db, { createTable } from "./utils/DatabaseProvider"
 import { colorPrimary, colorPrimaryDark } from "./utils/strings"
@@ -29,10 +31,12 @@ export default function App() {
     return unsubscribe
   }, [])
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar style="light" backgroundColor={colorPrimaryDark}/>
-      <MainNavigator />
-    </SafeAreaView>
+    <StoreProvider store={store}>
+      <SafeAreaView style={styles.container}>
+        <StatusBar style="light" backgroundColor={colorPrimaryDark}/>
+        <MainNavigator />
+      </SafeAreaView>
+    </StoreProvider>
   );
 }
 

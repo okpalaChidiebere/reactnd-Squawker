@@ -42,3 +42,49 @@ You can use [this](https://rnfirebase.io/messaging/usage#firebasejson) to furthe
 - The FCM console sends a mixture of Notifcation and Data Message. This is the take away. But from your own web server, you can choose to send just a data-only message or notification-only message
 - Use `messaging().onNotificationOpenedApp()` and `messaging().getInitialNotification()` to listen for when the notification we displayed as a result of Notification Message or a mixture of Data and Notification message (in this case, you may need to run a background and foreground task where data-only if for just background taks) was clicked. Eg in backgroud you make a server sync, and when the notification is clicked on, you run a linking code to open the appropriate screen or updating the UI
 - [https://aboutreact.com/react-native-firebase-cloud-messaging/](https://aboutreact.com/react-native-firebase-cloud-messaging/)
+
+Notification Message looks like this
+```json
+{
+    "token": "<registration token>",
+    "notification": {
+        "body": "Hello world", 
+        "test": "Lyla", 
+    },
+}
+
+```
+
+Data Message looks like this
+```json
+{
+    "token": "<registration token>",
+    "data": {
+        "author": "TestAccount", 
+        "authorKey": "key_test", 
+        "date": "1625167969245", 
+        "message": "Hello world"
+    }, "from": "164661899538", "messageId": 
+}
+
+```
+
+Mixture of Data and Notification message looks like
+```json
+{
+    "token": "<registration token>",
+    "data": {},
+    "notification": {
+        "body": "Hello world", 
+        "test": "Lyla", 
+    },
+}
+
+```
+
+
+# Sending to Multiple Devices
+
+There are tow ways you can do so. 
+- Device Groups: These is typically a set of devices that all belong to thesame user. Eg if chid owns two phones and a tablet that all use squawker, we can store all of these devices together for that user in the device group. The will done and managed in our App server side. Read more about this [here](https://firebase.google.com/docs/cloud-messaging/android/device-group)
+- Topics: This is like a mailing list. Devices will choose to subscribe to a topic and then only those devices that choose to subscribe will be sent the messages when the topic sends a message. Read more [here](https://rnfirebase.io/messaging/server-integration#send-messages-to-topics). You can [subscrbe](https://rnfirebase.io/messaging/usage#subscribing-to-topics) and [unsubscribe](https://rnfirebase.io/messaging/usage#unsubscribing-to-topics) to topics by that key! The Key that the user subscribes to and they key that the server sends the message too need to match EXACTLY.

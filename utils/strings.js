@@ -4,6 +4,9 @@ export const app_name = "Squawker"
 export const component_main = "MainCOmponent"
 export const component_following = "FollowingComponent"
 
+/** Notification Strings  */
+export const notification_title = (instructorName) => `New squawk from ${instructorName}`
+export const main_notification_channel_name = "Primary"
 
 /**
  * Colors

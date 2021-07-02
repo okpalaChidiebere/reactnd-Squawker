@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import { View, Text, StyleSheet, Switch } from "react-native"
+import messaging from "@react-native-firebase/messaging"
 import { colorText, colorSecondaryText, colorAccent } from "../utils/strings"
 import { setFollowingPreference } from "../utils/FollowingPreference"
 
@@ -7,9 +8,14 @@ export default function SwitchPreference({ title, value, summaryOff, summaryOn, 
 
     const [isEnabled, setIsEnabled] = useState(value);
 
-    const setOnSwitchChangeListener = (isOn) => {
+    const setOnSwitchChangeListener = async (isOn) => {
         setIsEnabled(isOn)
         setFollowingPreference(prefKey, isOn)
+        if(isOn){
+            await messaging().subscribeToTopic(prefKey)
+        }else{
+            await messaging().unsubscribeFromTopic(prefKey)
+        }
     }
 
     return (
