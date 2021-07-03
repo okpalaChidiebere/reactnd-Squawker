@@ -2,6 +2,14 @@
 Squawker is a social media App. It allows the users to follow the instructors of advanced android who write squawks for their fans. Squawks are short messages filled with helpful advice and reflections. If you have preferred more instructors than others, you can choose who to follow. 
 When an instructor sends a squawk, everyone who is following that instructor will immediately get a notification.
 
+I learned
+- Set up Firebase for my app
+- Send an FCM notification message from the Firebase console
+- Add an extra data to that messge and get it from the remoteMessage payload
+- Generate a registration id token for an app
+- Receive data message from a server
+- Follow an FCM topic
+
 # Pushing vs Pulling
 When developing a client side app, you need to decide how the data in your app will stay in sync with the remote sever.
 
@@ -64,7 +72,7 @@ Data Message looks like this
         "authorKey": "key_test", 
         "date": "1625167969245", 
         "message": "Hello world"
-    }, "from": "164661899538", "messageId": 
+    }, 
 }
 
 ```
@@ -81,10 +89,23 @@ Mixture of Data and Notification message looks like
 }
 
 ```
-
+[https://firebase.google.com/docs/cloud-messaging/concept-options](https://firebase.google.com/docs/cloud-messaging/concept-options)
 
 # Sending to Multiple Devices
 
 There are tow ways you can do so. 
 - Device Groups: These is typically a set of devices that all belong to thesame user. Eg if chid owns two phones and a tablet that all use squawker, we can store all of these devices together for that user in the device group. The will done and managed in our App server side. Read more about this [here](https://firebase.google.com/docs/cloud-messaging/android/device-group)
 - Topics: This is like a mailing list. Devices will choose to subscribe to a topic and then only those devices that choose to subscribe will be sent the messages when the topic sends a message. Read more [here](https://rnfirebase.io/messaging/server-integration#send-messages-to-topics). You can [subscrbe](https://rnfirebase.io/messaging/usage#subscribing-to-topics) and [unsubscribe](https://rnfirebase.io/messaging/usage#unsubscribing-to-topics) to topics by that key! The Key that the user subscribes to and they key that the server sends the message too need to match EXACTLY.
+
+# There's More to Learn about FCM
+- How to write server code for FCM server
+- How to manage registration id tokens or groups on a server. This [article](https://zainmanji.medium.com/how-to-structure-firebase-push-notifications-in-your-react-native-app-6847712d1c31) explains how to do it
+- How to deal with Upstream messages (where you send a message to FCM to send to other devices)
+- Learn about other message attributs like Message Lifespan (How long FCM will try to re-ping your device if its offline), Message Priority (determines whether to wake up your phone if it in doze mode), Collapsible/Non-collapsible Messages (Collasible message are replaced when a new message is sent. Eg lets say your phone is off and everytime you get a new email, an FCM tells your phone will have to sync with the server. If your phone is a sleep, you dont need to tell your phone to sync a 100 times when it is powered back on. You just need to tell it to sync once)
+- Learn how to fully sync your device with the server. In this Squawker App, we simply just save the new message in our local DB. We could add in this Squawker app to do a full database sync when you follow a new instructor so that you get all their messages you might have missed
+
+# Other useful Resources
+- Documentation about how messages are sent from FCM to client is [here](https://firebase.google.com/docs/cloud-messaging/concept-options)
+- Sending a push notification from the a user React-Native app to another React-Native app [here](https://firebase.googleblog.com/2016/08/sending-notifications-between-android.html)
+- [https://rnfirebase.io/messaging/server-integration](https://rnfirebase.io/messaging/server-integration)
+- [https://aboutreact.com/react-native-firebase-cloud-messaging/](https://aboutreact.com/react-native-firebase-cloud-messaging/) has how to add AdMod as well :)
