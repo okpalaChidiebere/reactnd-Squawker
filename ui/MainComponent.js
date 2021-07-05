@@ -1,17 +1,27 @@
-import React, { useEffect } from "react"
-import { View, StyleSheet, TouchableOpacity, FlatList }  from "react-native"
+import React, { useEffect, useRef, useMemo, useLayoutEffect, useState } from "react"
+import { View, StyleSheet, TouchableOpacity, FlatList, Text, TouchableWithoutFeedback, Platform }  from "react-native"
 import { useIsFocused } from "@react-navigation/native"
 import { connect } from "react-redux"
 import SquawkerListItem from "./SquawkerListItem"
-import { colorPrimary, app_name, component_following, white, colorDivider } from "../utils/strings"
+import { colorPrimary, app_name, component_following, white, colorDivider, colorText } from "../utils/strings"
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 import db, { listAllSquawks } from "../utils/DatabaseProvider"
 import { receiveSquawks } from "../actions"
+import { squawk_list_item_height, squawk_list_item_separator_height } from "../utils/dimens"
 
 
 function MainComponent({ squawks, dispatch }) {
 
   const isFocused = useIsFocused()
+
+  //helps us keeps snapshot of the scroll position
+  const scroller = useRef(null)
+
+  //reference to the scroll position of the flatlist
+  const scrollPosition = useRef(null)
+
+  //use to control the "new squawks" alert if the phone is in forrground or background
+  const [newSquawk, setNewSquawk] = useState(false)
 
   useEffect(() => {
     (async () => {
@@ -29,10 +39,60 @@ function MainComponent({ squawks, dispatch }) {
      */
   }, [ isFocused ])
 
+  //returns snapshot value
+  //more here https://reactjs.org/docs/react-component.html#getsnapshotbeforeupdate
+  const snapshot = useMemo(() => {
+        
+    if (scrollPosition.current) {
+        //capture the scroll position so we can adjust scroll later
+        return scrollPosition.current
+    }
+
+    return undefined
+  }, [ squawks ])
+
+  //runs after component mounts
+  useLayoutEffect(() => {
+    if (snapshot) {
+      //console.log("SnapshotValue: ",snapshot)
+        scroller.current.scrollToOffset({
+            offset: snapshot + squawk_list_item_height + squawk_list_item_separator_height,
+            animated: false,
+        });
+        setNewSquawk(true)
+    }
+  }, [ squawks ])
+
+  const handleScroll=(event)=>{
+    //get the scroll position
+    scrollPosition.current = event.nativeEvent.contentOffset.y
+
+    //if the user is crolling close to the top of the list, we remove the alert
+    if (scrollPosition.current < 100) {
+      setNewSquawk(false)
+    }
+  }
+
     return ( 
     <View style={styles.container}>
-      <FlatList 
+      {newSquawk && (
+        <TouchableWithoutFeedback 
+        onPress={() => scroller.current.scrollToOffset({offset:0})}
+        >
+          <View style={styles.squawks_alert}>
+            <Text style={{color: colorText}}>New Squawks</Text>
+          </View>
+        </TouchableWithoutFeedback>
+      )}
+      <FlatList
+        ref={scroller} 
+        onScroll={(event)=>handleScroll(event)}
         data={squawks} 
+        getItemLayout={(_, index) => ({
+          length: squawk_list_item_height + squawk_list_item_separator_height, 
+          offset: squawk_list_item_height + squawk_list_item_separator_height * index,
+          index,
+        })}
         renderItem={({ item, index }) => (
           <SquawkerListItem 
             key={index}
@@ -41,9 +101,9 @@ function MainComponent({ squawks, dispatch }) {
             message={item.message}
             date={item.date}
           />
-      )} 
+        )} 
         keyExtractor={( _ , index )=> index.toString()}
-        ItemSeparatorComponent={ () => <View style={{height:1, backgroundColor:colorDivider, marginLeft:8, marginRight:8}}/> }
+        ItemSeparatorComponent={ () => <View style={{height:squawk_list_item_separator_height, backgroundColor:colorDivider, marginLeft:8, marginRight:8}}/> }
       />
     </View>
     )
@@ -63,6 +123,30 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: '#fff',
     },
+    squawks_alert: {
+     position:"absolute",
+      backgroundColor:'#fff',
+      //https://stackoverflow.com/questions/41320131/how-to-set-shadows-in-react-native-for-android
+      ...Platform.select({
+        ios: {
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.2,
+        },
+        android: {
+          elevation: 10
+        },
+      }),
+      width: 150,
+      height:30,
+      top: 20,
+      borderRadius: 30,
+      zIndex: 1,
+      justifyContent:"center",
+      alignItems:"center",
+      marginHorizontal:350,
+      left: 0, right: 0, 
+    }
   })
 
 export function MainComponentOptions({ route, navigation }) {

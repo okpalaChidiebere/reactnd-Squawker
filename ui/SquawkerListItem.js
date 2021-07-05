@@ -1,12 +1,22 @@
-import React from "react"
+import React, { useCallback, useRef, useState } from "react"
 import moment from "moment"
 import { Text, View, StyleSheet, Image }  from "react-native"
 import { colorText, colorSecondaryText, follow_key_switch_asser, 
     follow_key_switch_cezanne, follow_key_switch_jlin, follow_key_switch_lyla, 
     follow_key_switch_nikita, } from "../utils/strings"
+import { squawk_list_item_height } from "../utils/dimens"
 
 
 export default function SquawkerListItem({ author, authorKey, message, date }){
+
+    const actualLines = useRef(null)
+    const [ defaultLines, setDefaultLines ] = useState(5)
+
+
+    const onTextLayout = useCallback(e => {
+        //we get the actual number of lines for the text view
+        actualLines.current = e.nativeEvent.lines.length
+    }, [])
     return (
         <View style={styles.container}>
             <Image
@@ -19,7 +29,7 @@ export default function SquawkerListItem({ author, authorKey, message, date }){
                     <Text style={styles.primaryText}>{author}</Text>
                     <Text style={styles.secondaryText}>{getDateForDisplaying(date)}</Text>
                 </View>
-                <Text>{message}</Text>
+                <Text onPress={() => setDefaultLines(actualLines.current)} numberOfLines={defaultLines} onTextLayout={onTextLayout}>{message}</Text>
             </View>
         </View>
     )
@@ -30,6 +40,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems:"center",
         padding: 15,
+        minHeight: squawk_list_item_height,
     },
     image: {
         width: 75,

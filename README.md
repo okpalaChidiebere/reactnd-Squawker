@@ -24,7 +24,7 @@ When developing a client side app, you need to decide how the data in your app w
 - run `yarn add @react-native-firebase/app`
 - run `yarn add @react-native-firebase/messaging`
 - cd into  `/ios` folder and run `pod install` right away
-- create a project in the [firebase console](https://console.firebase.google.com/). This early steps [video](https://www.youtube.com/watch?v=w6rQdurucCk)
+- create a project in the [firebase console](https://console.firebase.google.com/). This early steps [video](https://www.youtube.com/watch?v=w6rQdurucCk) 
 - Follow the rest of the instructions [here](https://rnfirebase.io/#2-android-setup) and you are good to go.
 - NOTE: appNames for Android (package) can be found at the first line of the AndroidManifest file. The appName for iOS (Bundle Identifier) can be found when you open the [project workspace](https://developer.apple.com/documentation/bundleresources/information_property_list/managing_your_app_s_information_property_list) in XCode. This [video](https://www.youtube.com/watch?v=x7kOxxJccug&t=563s) helped me see where to put the GoogleService-Info.plist file. For android it was at `android/app/google-service.json`
 - I still added some config to my app.json for [expo reasons](https://docs.expo.io/guides/setup-native-firebase/#managed-workflow-setup)
@@ -105,6 +105,7 @@ There are tow ways you can do so.
 - Learn how to fully sync your device with the server. In this Squawker App, we simply just save the new message in our local DB. We could add in this Squawker app to do a full database sync when you follow a new instructor so that you get all their messages you might have missed
 
 # Other useful Resources
+- [https://www.youtube.com/watch?v=USsYLaYyAV0](https://www.youtube.com/watch?v=USsYLaYyAV0) How to set up the server in Golang
 - Documentation about how messages are sent from FCM to client is [here](https://firebase.google.com/docs/cloud-messaging/concept-options)
 - Sending a push notification from the a user React-Native app to another React-Native app [here](https://firebase.googleblog.com/2016/08/sending-notifications-between-android.html)
 - [https://rnfirebase.io/messaging/server-integration](https://rnfirebase.io/messaging/server-integration)
