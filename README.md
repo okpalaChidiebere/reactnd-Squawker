@@ -20,6 +20,7 @@ When developing a client side app, you need to decide how the data in your app w
 
 # Connect Firebase and the Squawker App
 **NOTE:** Push notification never works on iOS emulators but works on Android Emulators and iOS/Android real devices/ it is mentioned [here](https://rnfirebase.io/messaging/usage#receiving-messages). Also, React-Native Firebase is not compactable with Expo Clinet yet. You one you add this your create-react-native-app, you will not be able to run it on Expo client anymore using `expo strart`. So, you either will rely on emulators or bulding your app apk to install then on real device to test. Read [this](https://docs.expo.io/guides/using-firebase/#usage-with-expo) first
+** I watched this [https://www.youtube.com/watch?v=dyAwv9HLS60](https://www.youtube.com/watch?v=dyAwv9HLS60) and saw notifications work on emulators. So maybe check it out
 
 - run `yarn add @react-native-firebase/app`
 - run `yarn add @react-native-firebase/messaging`
