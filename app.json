@@ -1,0 +1,8 @@
+{
+  "expo": {
+    "name": "reactnd-Squawker",
+    "slug": "reactnd-Squawker",
+    "version": "1.0.0",
+    "assetBundlePatterns": ["**/*"]
+  }
+}

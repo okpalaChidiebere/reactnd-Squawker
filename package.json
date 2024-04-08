@@ -1,0 +1,42 @@
+{
+  "name": "reactnd-squawker",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "expo start --dev-client",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "web": "expo start --web"
+  },
+  "dependencies": {
+    "@notifee/react-native": "^7.8.2",
+    "@react-native-firebase/app": "^19.1.1",
+    "@react-native-firebase/messaging": "^19.1.1",
+    "@reduxjs/toolkit": "^2.2.2",
+    "@types/react": "~18.2.45",
+    "date-fns": "^3.6.0",
+    "expo": "~50.0.14",
+    "expo-application": "~5.8.3",
+    "expo-constants": "~15.4.5",
+    "expo-dev-client": "~3.3.11",
+    "expo-linking": "~6.2.2",
+    "expo-router": "~3.4.8",
+    "expo-secure-store": "~12.8.1",
+    "expo-sqlite": "~13.4.0",
+    "expo-status-bar": "~1.11.1",
+    "expo-updates": "~0.24.12",
+    "react": "18.2.0",
+    "react-native": "0.73.6",
+    "react-native-safe-area-context": "4.8.2",
+    "react-native-screens": "~3.29.0",
+    "react-native-uuid": "^2.0.2",
+    "react-redux": "^9.1.0",
+    "typescript": "^5.3.0",
+    "expo-build-properties": "~0.11.1",
+    "expo-device": "~5.9.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.0"
+  },
+  "private": true
+}
