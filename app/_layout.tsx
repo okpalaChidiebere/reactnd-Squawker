@@ -2,7 +2,6 @@ import { Slot } from "expo-router";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { SQLiteProvider } from "expo-sqlite/next";
 import * as SecureStore from "expo-secure-store";
-import { Provider } from "react-redux";
 import messaging from "@react-native-firebase/messaging";
 import { AuthorizationStatus } from "@notifee/react-native";
 import {
@@ -52,9 +51,7 @@ export default function Layout() {
           await createTable(db);
         }}
       >
-        <Provider store={store}>
-          <Slot />
-        </Provider>
+        <Slot />
       </SQLiteProvider>
     </SafeAreaProvider>
   );

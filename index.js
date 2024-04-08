@@ -5,6 +5,8 @@ import { ExpoRoot } from "expo-router";
 import messaging from "@react-native-firebase/messaging";
 import { sendSquawkNotification } from "./src/utils";
 import executeTask from "./src/utils/SquawkerTasks";
+import { Provider } from "react-redux";
+import { store } from "./src/configurestore";
 
 const LOG_TAG = "index.js";
 /**
@@ -65,7 +67,11 @@ export function App() {
     return null;
   }
 
-  return <ExpoRoot context={ctx} />;
+  return (
+    <Provider store={store}>
+      <ExpoRoot context={ctx} />
+    </Provider>
+  );
 }
 
 // registerRootComponent calls AppRegistry.registerComponent('main', () => App);
